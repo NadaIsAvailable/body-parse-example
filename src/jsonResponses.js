@@ -37,7 +37,7 @@ const addUser = (request, response) => {
 
   if (!name || !age) {
     responseJSON.id = 'Missing Params';
-    return respondJSON(request, response, 400, respondJSON);
+    return respondJSON(request, response, 400, responseJSON);
   }
 
   let statusCode = 204;

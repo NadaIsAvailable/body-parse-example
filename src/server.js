@@ -20,14 +20,24 @@ const parseBody = (request, reponse, handler) => {
 
   request.on('end', () => {
     const bodyString = Buffer.concat(body).toString();
-    request.body = query.parse(bodyString);
-    // console.log(bodyString);
+    const type = request.headers['content-type'];
+
+    if (type === 'application/x-www-form-urlencoded') {
+      request.body = query.parse(bodyString);
+    } else if (type === 'application/json') {
+      request.body = JSON.parse(bodyString);
+    } else {
+      response.writeHead(400, { 'Content-Type': 'application/json' });
+      response.write(JSON.stringify({ "message": "Invalid content type" }));
+      response.end();
+    }
+
     handler(request, reponse);
   });
 };
 
 const handlePost = (request, response, parsedUrl) => {
-  console.log('post');
+  // console.log('post');
   if (parsedUrl.pathname === '/addUser') {
     // jsonHandler.addUser(request, response);
     parseBody(request, response, jsonHandler.addUser);
@@ -35,7 +45,7 @@ const handlePost = (request, response, parsedUrl) => {
 };
 
 const handleGet = (request, response, parsedUrl) => {
-  console.log('get');
+  // console.log('get');
   if (parsedUrl.pathname === '/style.css') {
     htmlHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === '/getUsers') {

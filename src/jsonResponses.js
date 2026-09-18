@@ -58,7 +58,7 @@ const addUser = (request, response) => {
   }
 
   // 204 - No Content
-  return respondJSON(request, response, statusCode, {})
+  return respondJSON(request, response, statusCode, {});
 };
 
 module.exports = {

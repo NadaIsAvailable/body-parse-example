@@ -20,7 +20,9 @@ const parseBody = (request, reponse, handler) => {
 
   request.on('end', () => {
     const bodyString = Buffer.concat(body).toString();
-    console.log(bodyString);
+    request.body = query.parse(bodyString);
+    // console.log(bodyString);
+    handler(request, reponse);
   });
 };
 
